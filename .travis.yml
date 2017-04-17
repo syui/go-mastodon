@@ -4,5 +4,5 @@ go:
 before_install:
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-script:
-    - $HOME/gopath/bin/goveralls -repotoken u2dqXvOxbIBr8eGxCjcgTkkN2JOSGx1fy
+    #script:
+    #    - $HOME/gopath/bin/goveralls -repotoken u2dqXvOxbIBr8eGxCjcgTkkN2JOSGx1fy

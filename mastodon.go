@@ -102,13 +102,22 @@ func NewClient(config *Config) *Client {
 
 // Authenticate get access-token to the API.
 func (c *Client) Authenticate(ctx context.Context, username, password string) error {
-	params := url.Values{}
-	params.Set("client_id", c.config.ClientID)
-	params.Set("client_secret", c.config.ClientSecret)
-	params.Set("grant_type", "password")
-	params.Set("username", username)
-	params.Set("password", password)
-	params.Set("scope", "read write follow")
+	//params := url.Values{}
+	//params.Set("client_id", c.config.ClientID)
+	//params.Set("client_secret", c.config.ClientSecret)
+	//params.Set("grant_type", "password")
+	//params.Set("username", username)
+	//params.Set("password", password)
+	//params.Set("scope", "read write follow")
+
+	jsonStr := `{
+		"client_id":"` + c.config.ClientID + `",
+		"client_secret":"` + c.config.ClientSecret + `",
+		"grant_type":"password",
+		"username":"` + username + `",
+		"password":"` + password + `",
+		"scope":"read write follow"
+	}`
 
 	u, err := url.Parse(c.config.Server)
 	if err != nil {
@@ -116,11 +125,21 @@ func (c *Client) Authenticate(ctx context.Context, username, password string) er
 	}
 	u.Path = path.Join(u.Path, "/oauth/token")
 
-	req, err := http.NewRequest(http.MethodPost, u.String(), strings.NewReader(params.Encode()))
+	//req, err := http.NewRequest(http.MethodPost, u.String(), strings.NewReader(params.Encode()))
+	//if err != nil {
+	//	return err
+	//}
+
+	req, err := http.NewRequest(
+	    "POST",
+	    u.String(),
+	    bytes.NewBuffer([]byte(jsonStr)),
+	)
 	if err != nil {
-		return err
+	    return err
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	//req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.Do(req)
 	if err != nil {
 		return err

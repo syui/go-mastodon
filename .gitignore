@@ -1,1 +1,6 @@
 *.exe
+cmd/mstdn/build.sh
+cmd/mstdn/mstdn
+cmd/mstdn/api.sh
+cmd/mstdn/client_id.json
+cmd/mstdn/access_token.json
